@@ -23,6 +23,7 @@ export class AppController {
   async getPostById(@Param('id') id: string): Promise<PostModel> {
     return this.postService.post({ id: Number(id) });
   }
+
   @Get('feed')
   async getPublishedPosts(): Promise<PostModel[]> {
     return this.postService.posts({
@@ -31,6 +32,7 @@ export class AppController {
       },
     });
   }
+
   @Get('filtered-posts/:searchString')
   async getFilteredPosts(
     @Param('searchString') searchString: string,
@@ -48,6 +50,7 @@ export class AppController {
       },
     });
   }
+
   @Post('post')
   async createDraft(@Body() postData: PostData): Promise<PostModel> {
     const { title, content, authorEmail } = postData;
@@ -60,10 +63,12 @@ export class AppController {
       },
     });
   }
+
   @Put('publish/:id')
   async publishPost(@Param('id') id: string): Promise<PostModel> {
     return this.postService.removePost({ id: Number(id) });
   }
+
   @Post('user')
   async registerUser(@Body() userData: UserData): Promise<UserModel> {
     return this.userService.createUser(userData);
