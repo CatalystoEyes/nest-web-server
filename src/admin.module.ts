@@ -2,12 +2,10 @@ import AdminJS from 'adminjs';
 import '@adminjs/express';
 import { AdminModule } from '@adminjs/nestjs';
 import { Database, Resource } from '@adminjs/prisma';
-import { PrismaClient } from '@prisma/client';
-import { DMMFClass } from '@prisma/client/runtime';
-1;
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
-const dmmf = (prisma as any)._dmmf as DMMFClass;
+const dmmf = (prisma as any)._dmmf as Prisma.DMMF;
 
 AdminJS.registerAdapter({ Database, Resource });
 

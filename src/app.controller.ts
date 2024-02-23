@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { PostService } from './post.service';
 import { User as UserModel, Post as PostModel } from '@prisma/client';
@@ -11,11 +19,10 @@ type PostData = {
   authorEmail: string;
 };
 
-@Controller()
+@Controller('api')
 export class AppController {
-  userService: any;
   constructor(
-    private readonly appService: UserService,
+    private readonly userService: UserService,
     private readonly postService: PostService,
   ) {}
 
@@ -66,11 +73,19 @@ export class AppController {
 
   @Put('publish/:id')
   async publishPost(@Param('id') id: string): Promise<PostModel> {
-    return this.postService.removePost({ id: Number(id) });
+    return this.postService.updatePost({
+      where: { id: Number(id) },
+      data: { published: true },
+    });
   }
 
   @Post('user')
   async registerUser(@Body() userData: UserData): Promise<UserModel> {
     return this.userService.createUser(userData);
+  }
+
+  @Delete('post/:id')
+  async removePost(@Param('id') id: string): Promise<UserModel> {
+    return this.postService.removePost({ id: Number(id) });
   }
 }
